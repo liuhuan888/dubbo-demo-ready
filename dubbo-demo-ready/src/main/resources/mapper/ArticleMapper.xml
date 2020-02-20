@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuhuan.dao.ArticleDao">
+	<select id="list" resultType="Article">
+		select article.*,channel.name channelName,cate.name categoryName,user.nickname nickname
+		from cms_article article,cms_channel channel,cms_category cate,cms_user user
+		WHERE article.channel_id=channel.id AND article.category_id=cate.id and article.user_id=user.id
+		<if test="start!=null and start!=''">
+			and article.created &gt;= #{start}
+		</if>
+		<if test="end!=null and end!=''">
+			and article.created &lt;= #{end}
+		</if>
+		<if test="field != null and field!='' and field!='null'">
+			order by article.${field}
+		</if>
+	</select>
+</mapper>
